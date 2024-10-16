@@ -1,4 +1,4 @@
-import { Navbar } from "@/src/components/navbar";
+import { Navbar } from "@/src/components/UI/navbar";
 import { ReactNode } from "react";
 
 type layoutProps = {
