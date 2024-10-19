@@ -1,12 +1,13 @@
 import { Button } from "@nextui-org/button";
-import Container from "../../UI/Container";
+
 import Link from "next/link";
 import { getRecentPosts } from "@/src/services/RecentPosts";
-import Card from "../../UI/Card";
+import Container from "@/src/components/UI/Container";
+import Card from "@/src/components/UI/Card";
+import CardSkeleton from "@/src/components/UI/CardSkeleton";
 
-const RecentPosts = async () => {
+const loading =  () => {
 
- const {data:posts} = await getRecentPosts()
 
   return (
     <Container>
@@ -17,8 +18,8 @@ const RecentPosts = async () => {
         </p>
       </div>
       <div className="my-8 grid justify-center gap-10 sm:grid-cols-1 md:grid-cols-4">
-        {posts?.map((item) => (
-         <Card key={item._id} post={item}></Card>
+        {[...Array(9)]?.map((item) => (
+          <CardSkeleton key={item}/>
         ))}
       </div>
       <div className="flex justify-center">
@@ -30,4 +31,4 @@ const RecentPosts = async () => {
   );
 };
 
-export default RecentPosts;
+export default loading;
