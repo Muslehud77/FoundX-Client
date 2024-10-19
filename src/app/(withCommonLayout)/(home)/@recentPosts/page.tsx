@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getRecentPosts } from "@/src/services/RecentPosts";
 import Container from "@/src/components/UI/Container";
 import Card from "@/src/components/UI/Card";
+import { TPost } from "@/src/types";
 
 
 const page = async () => {
@@ -18,7 +19,7 @@ const page = async () => {
         </p>
       </div>
       <div className="my-8 grid justify-center gap-10 sm:grid-cols-1 md:grid-cols-4">
-        {posts?.map((item) => (
+        {posts?.map((item : TPost) => (
           <Card key={item._id} post={item}></Card>
         ))}
       </div>
