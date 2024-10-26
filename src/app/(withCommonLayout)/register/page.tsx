@@ -2,7 +2,7 @@
 
 import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
-import { useUserRegistration } from "@/src/hooks/auth.hook";
+import { useUserLogin } from "@/src/hooks/auth.hook";
 import { useToastPromise } from "@/src/hooks/toast/toast.hook";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { registerUser } from "@/src/services/AuthService";
@@ -16,12 +16,7 @@ import Link from "next/link";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function RegisterPage() {
-
-
-  const {mutate:handleRegister,isPending,data,isError} = useUserRegistration()
-
-  
-
+  const { mutate: handleRegister, isPending, data, isError } = useUserLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const profilePhoto =
@@ -32,9 +27,7 @@ export default function RegisterPage() {
       profilePhoto,
     };
 
-   handleRegister(user)
-    
-
+    handleRegister(user);
   };
 
   return (

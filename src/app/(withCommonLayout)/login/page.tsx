@@ -7,10 +7,14 @@ import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginValidationSchema } from "@/src/schemas/login.schema";
+import { useUserLogin } from "@/src/hooks/auth.hook";
 
 const LoginPage = () => {
+
+  const {mutate:userLogin} = useUserLogin()
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+   userLogin(data);
   };
 
   return (

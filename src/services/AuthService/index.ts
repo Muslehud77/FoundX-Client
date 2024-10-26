@@ -20,3 +20,19 @@ export const registerUser = async (user:FieldValues) => {
     }
 
 }
+export const loginUser = async (user:FieldValues) => {
+    
+    try{
+        const {data} = await axiosInstance.post("/auth/login", user);
+        if(data.success){
+            cookies().set("accessToken",data?.data?.accessToken);
+            cookies().set("refreshToken",data?.data?.refreshToken);
+        }
+        return data;
+    }catch(e:any){
+        
+        throw new Error(e);
+        
+    }
+
+}
