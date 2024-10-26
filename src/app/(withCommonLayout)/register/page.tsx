@@ -2,17 +2,25 @@
 
 import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
+import { useToastPromise } from "@/src/hooks/toast/toast.hook";
 import registerValidationSchema from "@/src/schemas/register.schema";
 import { registerUser } from "@/src/services/AuthService";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
+import { useMutation } from "@tanstack/react-query";
 
 import Link from "next/link";
 
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function RegisterPage() {
+
+
+  const {mutate:handleRegister,isPending,data,isError} = useUserRegistration()
+
+  
 
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -24,7 +32,8 @@ export default function RegisterPage() {
       profilePhoto,
     };
 
-    await registerUser(user);
+   handleRegister(user)
+    
 
   };
 

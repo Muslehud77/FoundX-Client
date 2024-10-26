@@ -12,9 +12,11 @@ export const registerUser = async (user:FieldValues) => {
             cookies().set("accessToken",data?.data?.accessToken);
             cookies().set("refreshToken",data?.data?.refreshToken);
         }
+        return data;
     }catch(e:any){
-        console.log(e);
+        
         throw new Error(e);
+        
     }
 
 }
