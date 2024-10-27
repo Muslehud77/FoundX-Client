@@ -1,4 +1,5 @@
 "use client";
+import { logoutUser } from "@/src/services/AuthService";
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import {
@@ -37,7 +38,11 @@ export default function UserDropDown() {
         <DropdownItem key="/profile/create-post">Create-Post</DropdownItem>
         <DropdownItem key="/profile/settings">Settings</DropdownItem>
 
-        <DropdownItem className="text-danger" color="danger">
+        <DropdownItem
+          onClick={()=>logoutUser()}
+          className="text-danger"
+          color="danger"
+        >
           Logout
         </DropdownItem>
       </DropdownMenu>
