@@ -1,4 +1,5 @@
 import Container from "@/src/components/UI/Container";
+import Sidebar from "@/src/components/UI/Sidebar";
 import { ReactNode } from "react";
 
 type layoutProps = {
