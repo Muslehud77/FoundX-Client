@@ -4,7 +4,8 @@ import { getCurrentUser } from "./services/AuthService";
 
 type Role = keyof typeof roleBasedRoutes;
 
-const AuthRoutes = ["/login", "/register"];
+export const AuthRoutes = ["/login", "/register"];
+
 
 const roleBasedRoutes = {
   USER: [/^\/profile/],
@@ -15,8 +16,7 @@ const roleBasedRoutes = {
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-const user = await getCurrentUser();
-
+  const user = await getCurrentUser();
 
   if (!user) {
     if (AuthRoutes.includes(pathname)) {
@@ -41,5 +41,5 @@ const user = await getCurrentUser();
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/profile","/profile/:page*", "/admin", "/login", "/register"],
+  matcher: ["/profile", "/profile/:page*", "/admin", "/login", "/register"],
 };

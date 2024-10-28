@@ -1,27 +1,33 @@
 "use client";
-import { logoutUser } from "@/src/services/AuthService";
+import { useUser } from "@/src/context/user.provider";
+
 import { Avatar } from "@nextui-org/avatar";
-import { Button } from "@nextui-org/button";
+
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/dropdown";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import {  useRouter } from "next/navigation";
 
 export default function UserDropDown() {
+  const { user,handleLogout } = useUser();
+
   const router = useRouter();
 
   const navigate = (path: string) => {
     router.push(path);
   };
 
+  console.log(user);
+  
+
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Avatar className="cursor-pointer" name="joe" />
+        <Avatar className="cursor-pointer"  name={user?.name} src={user?.profilePhoto} />
       </DropdownTrigger>
       <DropdownMenu
         onAction={(key) => {
@@ -39,7 +45,7 @@ export default function UserDropDown() {
         <DropdownItem key="/profile/settings">Settings</DropdownItem>
 
         <DropdownItem
-          onClick={()=>logoutUser()}
+          onClick={() => handleLogout()}
           className="text-danger"
           color="danger"
         >

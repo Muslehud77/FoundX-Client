@@ -1,3 +1,4 @@
+"use client"
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -14,10 +15,15 @@ import clsx from "clsx";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/UI/theme-switch";
 import { Logo } from "@/src/components/UI/icons";
-import { Avatar } from "@nextui-org/avatar";
+
 import UserDropDown from "./UserDropDown";
+import { useUser } from "@/src/context/user.provider";
+import { Button } from "@nextui-org/button";
 
 export const Navbar = () => {
+
+  const {user} = useUser()
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -53,7 +59,17 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden sm:flex gap-2">
-        <UserDropDown/>
+          {
+            user ? <UserDropDown/> : <NextLink href="/login">
+             
+               <Button>
+                  Login
+               </Button>
+              
+            </NextLink>
+          }
+          
+      
         </NavbarItem>
       </NavbarContent>
 
