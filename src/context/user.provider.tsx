@@ -10,28 +10,23 @@ import {
 import { TUser } from "../types";
 import { getCurrentUser, logoutUser } from "../services/AuthService";
 import { usePathname, useRouter } from "next/navigation";
-
-
-
-const privateRoutes = ["/profile", "/admin"];
+import { privateRoutes } from "../constant";
 
 type TUserProviderValues = {
   user: TUser | null;
   setUser: (user: TUser | null) => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  handleLogout : () => void
+  handleLogout: () => void;
 };
 
 const UserContext = createContext<TUserProviderValues | undefined>(undefined);
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
-    const router = useRouter()
+  const router = useRouter();
   const [user, setUser] = useState<TUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-
 
   const handleUser = async () => {
     const user = await getCurrentUser();
@@ -39,23 +34,19 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   };
 
-
-  const isPrivateRoute = (pathname:string) => {
+  const isPrivateRoute = (pathname: string) => {
     return privateRoutes.some((route) => pathname.startsWith(route));
   };
 
-
   const handleLogout = () => {
-    logoutUser()
+    logoutUser();
     setUser(null);
     setIsLoading(false);
     console.log(pathname);
-      if (isPrivateRoute(pathname)) {
-        router.push("/login");
-      }
-
-  }
-
+    if (isPrivateRoute(pathname)) {
+      router.push("/login");
+    }
+  };
 
   useEffect(() => {
     handleUser();
