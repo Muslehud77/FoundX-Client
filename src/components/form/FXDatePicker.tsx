@@ -9,7 +9,7 @@ type FXDatePickerProps = {
   required?: boolean;
   name: string;
   label: string;
-  type?: string;
+  
 };
 
 const FXDatePicker = ({
@@ -29,6 +29,7 @@ const FXDatePicker = ({
         <DatePicker
         onChange={onChange}
         value={value}
+        className="min-w-full sm:min-w-[225px]"
         //   isInvalid={!!errors[name]}
         //   errorMessage={errors[name]?.message as string}
           label={label}

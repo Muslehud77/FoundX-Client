@@ -46,3 +46,4 @@ export type TUser = {
   updatedAt?: string;
   __v?: number;
 };
+

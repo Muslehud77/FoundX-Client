@@ -21,7 +21,6 @@ export default function UserDropDown() {
     router.push(path);
   };
 
-  console.log(user);
   
 
   return (

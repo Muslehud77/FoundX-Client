@@ -12,8 +12,31 @@ import {
   FieldValues,
 } from "react-hook-form";
 import FXDatePicker from "@/src/components/form/FXDatePicker";
+import dateToISO from "@/src/utils/dateToISO";
+import FXSelect from "@/src/components/form/FXSelect";
+import {allDistict as allDistrict} from "@bangladeshi/bangladesh-address"
+import { useGetCategories } from "@/src/hooks/categories.hook";
+import { TCategory } from "@/src/types";
+
+
+const cityOptions = allDistrict().sort().map((city:string)=> ({
+  key:city, label:city
+}))
+
+
+
 
 const page = () => {
+
+   const {data,isLoading} = useGetCategories()
+
+   const categoryOptions = data?.data?.map((item: TCategory) => ({
+     key: item._id,
+     label: item.name,
+   })) || [];
+
+   console.log(categoryOptions);
+
   const methods = useForm();
 
   const { control, handleSubmit } = methods;
@@ -27,7 +50,7 @@ const page = () => {
     const postData = {
       ...data,
       questions: data.questions.map((que: { value: string }) => que.value),
-      dateFound: new Date(data.dateFound).toISOString(),
+      dateFound: dateToISO(data.dateFound),
     };
     console.log(postData);
   };
@@ -38,6 +61,11 @@ const page = () => {
       value: "",
     });
   };
+
+
+  console.log();
+
+  
 
   return (
     <div className="h-full rounded-xl bg-gradient-to-b from-default-100 px-[73px] py-12">
@@ -57,10 +85,19 @@ const page = () => {
             <div className="min-w-fit flex-1">
               <FXInput label="Location" name="location" />
             </div>
-            <div className="min-w-fit flex-1"></div>
+            <div className="min-w-fit flex-1">
+              <FXSelect label="City" options={cityOptions} name="city" />
+            </div>
           </div>
           <div className="flex flex-wrap gap-2 py-2">
-            <div className="min-w-fit flex-1"></div>
+            <div className="min-w-fit flex-1">
+              <FXSelect
+                isLoading={isLoading}
+                label="Category"
+                options={categoryOptions}
+                name="category"
+              />
+            </div>
             <div className="min-w-fit flex-1">
               <label
                 className="flex h-14 w-full cursor-pointer items-center justify-center rounded-xl border-2 border-default-200 text-default-500 shadow-sm transition-all duration-100 hover:border-default-400"
@@ -68,6 +105,13 @@ const page = () => {
               >
                 Upload image
               </label>
+              <input
+                id="image"
+                type="file"
+                multiple
+                className="hidden"
+                accept="image/*"
+              />
             </div>
           </div>
 
