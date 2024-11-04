@@ -14,7 +14,7 @@ import {
 import FXDatePicker from "@/src/components/form/FXDatePicker";
 import dateToISO from "@/src/utils/dateToISO";
 import FXSelect from "@/src/components/form/FXSelect";
-import {allDistict as allDistrict} from "@bangladeshi/bangladesh-address"
+import { allDistict as allDistrict } from "@bangladeshi/bangladesh-address";
 import { useGetCategories } from "@/src/hooks/categories.hook";
 import { TCategory } from "@/src/types";
 import { ChangeEvent, useState } from "react";
@@ -24,37 +24,36 @@ import { useCreatePost } from "@/src/hooks/post.hook";
 import Loading from "@/src/components/UI/Loading";
 import { useRouter } from "next/navigation";
 
-
-const cityOptions = allDistrict().sort().map((city:string)=> ({
-  key:city, label:city
-}))
-
-
-
+const cityOptions = allDistrict()
+  .sort()
+  .map((city: string) => ({
+    key: city,
+    label: city,
+  }));
 
 const page = () => {
+  const router = useRouter();
 
+  const {
+    mutate,
+    data: createPostData,
+    isPending: createPostPending,
+    isSuccess: postSuccess,
+  } = useCreatePost();
 
-  const router = useRouter()
+  console.log(createPostData);
 
-  const {mutate,data:createPostData,isPending:createPostPending,isSuccess:postSuccess} = useCreatePost()
-
-
-  console.log(createPostData)
-
-  const {user} = useUser()
+  const { user } = useUser();
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
 
+  const { data, isLoading } = useGetCategories();
 
-   const {data,isLoading} = useGetCategories()
-
-   const categoryOptions = data?.data?.map((item: TCategory) => ({
-     key: item._id,
-     label: item.name,
-   })) || [];
-
-   
+  const categoryOptions =
+    data?.data?.map((item: TCategory) => ({
+      key: item._id,
+      label: item.name,
+    })) || [];
 
   const methods = useForm();
 
@@ -66,26 +65,20 @@ const page = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-
     const formData = new FormData();
-
-
 
     const postData = {
       ...data,
       questions: data.questions.map((que: { value: string }) => que.value),
       dateFound: dateToISO(data.dateFound),
-      user: user?._id
+      user: user?._id,
     };
 
-    formData.append("data",JSON.stringify(postData))
-    imageFiles.forEach(image =>  formData.append("itemImages", image))
+    formData.append("data", JSON.stringify(postData));
+    imageFiles.forEach((image) => formData.append("itemImages", image));
 
-
-     mutate(formData)
+    mutate(formData);
   };
-
-
 
   const handleAppend = () => {
     append({
@@ -94,37 +87,29 @@ const page = () => {
     });
   };
 
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
 
-  const handleImageChange = async (e:ChangeEvent<HTMLInputElement>)=>{
+    setImageFiles((prev) => [...prev, ...files]);
 
-    const files = Array.from(e.target.files || [])
-
-    setImageFiles((prev)=> [...prev,...files]);
-
-    if(files.length){
-     
-
-      files.forEach(file=> {
-         const reader = new FileReader()
-      reader.onload = ()=>{
-        setImagePreviews((prev)=>[...prev,reader.result as string])
-      }
-      reader.readAsDataURL(file)
+    if (files.length) {
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImagePreviews((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
       });
-
     }
+  };
 
+  if (postSuccess) {
+    router.push("/profile");
   }
-
-
-  if(postSuccess){
-    router.push("/profile")
-  }
-  
 
   return (
     <>
-    <Loading isPending={createPostPending}/>
+      <Loading isPending={createPostPending} />
       <div className="h-full rounded-xl bg-gradient-to-b from-default-100 px-[73px] py-12">
         <h1 className="text-2xl font-semibold">Post a found item</h1>
         <Divider className="mb-5 mt-3" />
