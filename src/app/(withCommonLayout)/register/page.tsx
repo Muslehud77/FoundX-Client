@@ -3,7 +3,7 @@
 import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
 import Loading from "@/src/components/UI/Loading";
-import { useUserLogin } from "@/src/hooks/auth.hook";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
 
 import registerValidationSchema from "@/src/schemas/register.schema";
 
@@ -11,11 +11,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function RegisterPage() {
-  const { mutate: handleRegister, isPending } = useUserLogin();
+  const {
+    mutate: handleRegister,
+    isPending,
+    isSuccess,
+    isError,
+  } = useUserRegistration();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const profilePhoto =
@@ -28,6 +38,14 @@ export default function RegisterPage() {
 
     handleRegister(user);
   };
+
+    if (!isError && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/");
+      }
+    }
 
   return (
     <>

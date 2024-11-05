@@ -6,6 +6,7 @@ import { TPost } from "@/src/types";
 
 
 export default async function FoundItems() {
+  
   const { data } = await axiosInstance.get(`/items`);
 
   return (

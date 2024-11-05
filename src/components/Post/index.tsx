@@ -9,6 +9,8 @@ import { Button } from "@nextui-org/button";
 import { useUser } from "@/src/context/user.provider";
 import { TPost, TUser } from "../../types";
 import ImageGallery from "./ImageGallery";
+import ClaimRequestModal from "../modals/ClaimRequestModal";
+import AuthenticationModal from "../modals/AuthenticationModal";
 
 type TProps = {
   post: TPost;
@@ -67,14 +69,14 @@ export default function Post({ post }: TProps) {
         <ImageGallery images={images} />
 
         <div className="mt-4 flex gap-5">
-          {/* {email !== loggedInUser?.email && (
+          {email !== loggedInUser?.email && (
             <>
               {loggedInUser?.email && (
-                <ClaimRequestModal id={_id} questions={questions} />
+                <ClaimRequestModal _id={_id} questions={questions} />
               )}
-              {!loggedInUser?.email && <AuthenticationModal id={_id} />}
+              {!loggedInUser?.email && <AuthenticationModal _id={_id} />}
             </>
-          )} */}
+          )}
           {email !== loggedInUser?.email && (
             <div className="w-[1px] bg-default-200" />
           )}
