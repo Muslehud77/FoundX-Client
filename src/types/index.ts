@@ -47,3 +47,8 @@ export type TUser = {
   __v?: number;
 };
 
+export type TClaimRequest = {
+  item: string;
+  description: any;
+  answers: any[];
+};
