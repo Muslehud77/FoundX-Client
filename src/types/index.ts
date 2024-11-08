@@ -47,8 +47,40 @@ export type TUser = {
   __v?: number;
 };
 
-export type TClaimRequest = {
-  item: string;
-  description: any;
-  answers: any[];
+export type TClaimant = {
+  _id: string;
+  name: string;
+  role: "USER" | "ADMIN";
+  email: string;
+  status: "ACTIVE" | "INACTIVE";
+  mobileNumber: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  profilePhoto: string;
 };
+
+
+export type TAnswer = {
+  question: string;
+  answer: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TClaimRequest = {
+  _id: string;
+  item?: TPost;
+  claimant: string | TClaimant;
+  status: string;
+  description: string;
+  answers: TAnswer[];
+  feedback: string | null;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+export type TReceivedClaimRequest = TPost & {
+  claimRequests: TClaimRequest[];
+}
