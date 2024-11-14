@@ -7,7 +7,11 @@ export const useClaimRequest = () => {
   const toastId = 1;
 
   return useMutation({
-    mutationFn: async (postData: TClaimRequest) => await addClaimRequest(postData),
+    mutationFn: async (postData: {
+      item: string;
+      description: any;
+      answers: any[];
+    }) => await addClaimRequest(postData),
     onSuccess: () => {
       toast.success("Successfully created claim request", { id: toastId });
     },

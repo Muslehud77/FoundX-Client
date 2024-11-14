@@ -83,4 +83,6 @@ export type TClaimRequest = {
 
 export type TReceivedClaimRequest = TPost & {
   claimRequests: TClaimRequest[];
+
 }
+

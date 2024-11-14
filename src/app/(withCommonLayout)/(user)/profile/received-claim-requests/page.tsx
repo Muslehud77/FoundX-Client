@@ -8,10 +8,11 @@ const ReceivedClaimRequestsPage = () => {
 
   const posts = data?.data || [];
 
+
   return (
     <>
       {posts?.length ? (
-        posts.map((post: TReceivedClaimRequest, index: number) => (
+        posts?.map((post: TReceivedClaimRequest, index: number) => (
           <ClaimPostCard key={index} post={post} />
         ))
       ) : (

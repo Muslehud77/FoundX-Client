@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head />
       <body
         className={clsx(
@@ -43,7 +43,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-        {children}
+          {children}
         </Providers>
       </body>
     </html>

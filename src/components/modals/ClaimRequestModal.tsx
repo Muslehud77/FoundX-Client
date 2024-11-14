@@ -37,7 +37,7 @@ const ClaimRequestModal = ({ questions, _id }: ClaimRequestModalProps) => {
       title="Claim Request"
     >
       <FXForm onSubmit={handleSubmit}>
-        {questions.map((question, index) => (
+        {questions?.map((question, index) => (
           <div className="mb-4" key={index}>
             <p className="mb-1">{question}</p>
             <FXInput

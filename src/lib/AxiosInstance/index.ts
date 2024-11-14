@@ -8,9 +8,9 @@ const axiosInstance = axios.create({
 });
 
 // Add a request interceptor
-axiosInstance.interceptors.request.use(function (config) {
-  
- const accessToken = cookies().get("accessToken")?.value;
+axiosInstance.interceptors.request.use(async function (config) {
+   const cookieStore = await cookies();
+ const accessToken = cookieStore.get("accessToken")?.value;
   if(accessToken){
     config.headers.authorization = accessToken
   }

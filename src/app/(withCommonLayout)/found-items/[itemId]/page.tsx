@@ -12,6 +12,7 @@ interface IProps {
 const ItemDetailPage = async ({ params: { itemId } }: IProps) => {
   const { data: post } = await getPost(itemId);
 
+
   return (
     <Container>
       <div className="mx-auto my-3 max-w-[720px]">

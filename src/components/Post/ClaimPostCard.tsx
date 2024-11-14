@@ -8,6 +8,7 @@ import { useState } from "react";
 import { TClaimant, TReceivedClaimRequest } from "@/src/types";
 import ImageGallery from "./ImageGallery";
 import dayjs from "dayjs";
+import AcceptClaimRequestModal from "../modals/AcceptClaimRequestModal";
 
 type TProps = {
   post: TReceivedClaimRequest;
@@ -76,10 +77,11 @@ export default function ClaimPostCard({ post }: TProps) {
                   <p className="text-xs text-default-600">{name}</p>
                   <p>{comment}</p>
                 </div>
-                <Eye
+                {/* <Eye
                   className="cursor-pointer"
                   onClick={() => handleAnswers({ answers: answers, id: _id })}
-                />
+                /> */}
+                 <AcceptClaimRequestModal _id={_id} claimedAnswers={answers} />
               </div>
             </div>
           );

@@ -25,8 +25,7 @@ import Loading from "@/src/components/UI/Loading";
 import { useRouter } from "next/navigation";
 
 const cityOptions = allDistrict()
-  .sort()
-  .map((city: string) => ({
+  .sort()?.map((city: string) => ({
     key: city,
     label: city,
   }));
@@ -160,7 +159,7 @@ const page = () => {
 
             {imagePreviews.length > 0 && (
               <div className="flex gap-5 my-5 flex-wrap">
-                {imagePreviews.map((imageDataUrl) => (
+                {imagePreviews?.map((imageDataUrl) => (
                   <div
                     key={imageDataUrl}
                     className="relative size-48 rounded-xl border-2 border-dashed border-default-300 p-2"
@@ -192,7 +191,7 @@ const page = () => {
             </div>
 
             <div className="space-y-5">
-              {fields.map((field, index) => (
+              {fields?.map((field, index) => (
                 <div key={field.id} className="flex gap-2 items-center">
                   <FXInput label="Question" name={`questions.${index}.value`} />
                   <Button

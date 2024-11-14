@@ -10,10 +10,13 @@ import {
   DropdownItem,
 } from "@nextui-org/dropdown";
 
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 export default function UserDropDown() {
-  const { user,handleLogout } = useUser();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { user, handleLogout } = useUser();
 
   const router = useRouter();
 
@@ -21,12 +24,14 @@ export default function UserDropDown() {
     router.push(path);
   };
 
-  
-
   return (
-    <Dropdown>
+    <Dropdown ref={dropdownRef}>
       <DropdownTrigger>
-        <Avatar className="cursor-pointer"  name={user?.name} src={user?.profilePhoto} />
+        <Avatar
+          className="cursor-pointer"
+          name={user?.name}
+          src={user?.profilePhoto}
+        />
       </DropdownTrigger>
       <DropdownMenu
         onAction={(key) => {

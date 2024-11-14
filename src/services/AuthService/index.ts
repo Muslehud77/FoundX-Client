@@ -7,11 +7,12 @@ import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
 export const registerUser = async (user: FieldValues) => {
+   const cookieStore = await cookies();
   try {
     const { data } = await axiosInstance.post("/auth/register", user);
     if (data.success) {
-      cookies().set("accessToken", data?.data?.accessToken);
-      cookies().set("refreshToken", data?.data?.refreshToken);
+     cookieStore.set("accessToken", data?.data?.accessToken);
+     cookieStore.set("refreshToken", data?.data?.refreshToken);
     }
     return data;
   } catch (e: any) {
@@ -20,11 +21,12 @@ export const registerUser = async (user: FieldValues) => {
 };
 
 export const loginUser = async (user: FieldValues) => {
+   const cookieStore = await cookies();
   try {
     const { data } = await axiosInstance.post("/auth/login", user);
     if (data.success) {
-      cookies().set("accessToken", data?.data?.accessToken);
-      cookies().set("refreshToken", data?.data?.refreshToken);
+     cookieStore.set("accessToken", data?.data?.accessToken);
+     cookieStore.set("refreshToken", data?.data?.refreshToken);
     }
     return data;
   } catch (e: any) {
@@ -32,14 +34,17 @@ export const loginUser = async (user: FieldValues) => {
   }
 };
 
-export const logoutUser = () => {
-  cookies().delete("accessToken");
-  cookies().delete("refreshToken");
+export const logoutUser = async () => {
+   const cookieStore = await cookies();
+ cookieStore.delete("accessToken");
+ cookieStore.delete("refreshToken");
 
 };
 
 export const getCurrentUser = async () => {
-  const accessToken = cookies().get("accessToken")?.value;
+  const cookieStore = await cookies();
+
+  const accessToken = cookieStore.get("accessToken")?.value;
 
   let decodedToken = null;
 

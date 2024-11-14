@@ -8,10 +8,10 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/modal";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type FXModalProps = {
-  buttonText: string;
+  buttonText?: string;
   title: string;
   children: React.ReactNode;
   buttonVariant?:
@@ -23,8 +23,10 @@ type FXModalProps = {
     | "shadow"
     | "ghost"
     | undefined;
-  buttonClassName: string;
+  buttonClassName?: string;
   closeModal?: boolean;
+  isIcon?: boolean;
+  iconElement?: React.ReactNode
 };
 
 export default function FXModal({
@@ -34,25 +36,52 @@ export default function FXModal({
   buttonVariant = "light",
   buttonClassName,
   closeModal,
+  isIcon = false,
+  iconElement
 }: FXModalProps) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+  const ref = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (closeModal) {
       onClose();
     }
-  }, [closeModal]);
+
+    if (ref.current) {
+      console.log(ref)
+    }
+
+
+  }, [closeModal, isOpen]);
+
+ 
+
 
   return (
     <>
-      <Button
-        className={buttonClassName}
-        variant={buttonVariant}
-        onPress={onOpen}
-      >
-        {buttonText}
-      </Button>
+      {!isIcon ? (
+        <Button
+          className={buttonClassName}
+          variant={buttonVariant}
+          onPress={onOpen}
+        >
+          {buttonText}
+        </Button>
+      ) : (
+        <Button
+          className={buttonClassName}
+          variant={buttonVariant}
+          onPress={onOpen}
+          isIconOnly={true}
+        >
+          {iconElement}
+        </Button>
+      )}
+
       <Modal
+      ref={ref}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         isDismissable={false}
