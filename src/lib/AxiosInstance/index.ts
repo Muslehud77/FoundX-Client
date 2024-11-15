@@ -1,4 +1,5 @@
 import { envConfig } from "@/src/config/envConfig";
+import { getNewAccessToken } from "@/src/services/AuthService";
 import axios from "axios";
 import { cookies } from "next/headers";
 
@@ -16,9 +17,28 @@ axiosInstance.interceptors.request.use(async function (config) {
   }
 
     return config;
-  }, function (error) {
+  }, async function (error) {
 
-    return Promise.reject(error);
+    const config = error.config;
+    if(error?.response?.status === 401 && !config?.sent){
+
+        config.sent = true;
+
+      const res = await getNewAccessToken()
+
+        const accessToken = res.data.accessToken;
+
+        config.headers.authorization = accessToken;
+
+        const cookieStore = await cookies();
+        cookieStore.set("accessToken", accessToken)
+
+      return axiosInstance(config)
+    }else{
+      
+      return Promise.reject(error);
+    }
+
   });
 
 // Add a response interceptor

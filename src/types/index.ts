@@ -86,3 +86,10 @@ export type TReceivedClaimRequest = TPost & {
 
 }
 
+
+export type TSearchResult = {
+  title: string;
+  description: string;
+  thumbnail: string;
+  id: string;
+}
