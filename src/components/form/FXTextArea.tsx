@@ -1,6 +1,6 @@
 "use client";
 import {Textarea } from "@nextui-org/input";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 type FXTextAreaProps = {
   variant?: "bordered" | "flat" | "faded" | "underlined" | undefined;
@@ -24,6 +24,11 @@ const FXTextArea = ({
     formState: { errors },
   } = useFormContext();
 
+
+  const currentValue = useWatch({
+    name
+  })
+
   return (
     <Textarea
       {...register(name)}
@@ -35,6 +40,7 @@ const FXTextArea = ({
       variant={variant}
       size={size}
       required={required}
+      value={currentValue || ""}
     />
   );
 };

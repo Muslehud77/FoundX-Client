@@ -23,9 +23,12 @@ import { useUser } from "@/src/context/user.provider";
 import { useCreatePost } from "@/src/hooks/post.hook";
 import Loading from "@/src/components/UI/Loading";
 import { useRouter } from "next/navigation";
+import generateDescription from "@/src/services/ImageDescriptionGemini";
+import { Spinner } from "@nextui-org/spinner";
 
 const cityOptions = allDistrict()
-  .sort()?.map((city: string) => ({
+  .sort()
+  ?.map((city: string) => ({
     key: city,
     label: city,
   }));
@@ -45,7 +48,7 @@ const page = () => {
   const { user } = useUser();
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
-
+  const [descriptionLoading, setDescriptionLoading] = useState(false);
   const { data, isLoading } = useGetCategories();
 
   const categoryOptions =
@@ -105,6 +108,27 @@ const page = () => {
   if (postSuccess) {
     router.push("/profile");
   }
+
+  const handleDescriptionGeneration = async () => {
+    setDescriptionLoading(true);
+    try {
+      if (imagePreviews.length === 0) {
+        return alert("Please upload an image first");
+      } else {
+        const res = await generateDescription(
+          imagePreviews[0],
+          "Generate a description for this image, which i found, the description should start with 'found this!!!'"
+        );
+        if (res) {
+          setDescriptionLoading(false);
+        }
+        methods.setValue("description", res);
+      }
+    } catch (err) {
+      setDescriptionLoading(false);
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -174,10 +198,30 @@ const page = () => {
               </div>
             )}
 
-            <div className="flex flex-wrap-reverse gap-2 py-2">
+            <div className="flex flex-col gap-2 py-2">
               <div className="min-w-fit flex-1">
                 {" "}
                 <FXTextArea label="Description" name="description" />
+              </div>
+
+          
+
+              <div className="self-end space-x-2">
+                {methods.getValues("description") && (
+                <Button onClick={() => methods.resetField("description")}>
+                  Clear
+                </Button>
+              )}
+              {imagePreviews.length ? (
+                  <Button
+                    isLoading={descriptionLoading}
+                    onClick={handleDescriptionGeneration}
+                  >
+                    Generate Description
+                  </Button>
+              ) : (
+                <></>
+              )}
               </div>
             </div>
 
@@ -208,6 +252,11 @@ const page = () => {
 
             <Divider className="my-5" />
             <div className="flex justify-end">
+              {methods.getValues("description") && (
+                <Button onClick={() => methods.resetField("description")}>
+                  Clear
+                </Button>
+              )}
               <Button size="lg" type="submit">
                 Post
               </Button>
